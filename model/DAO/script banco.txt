@@ -17,6 +17,19 @@ unique index (id),
 unique key (id)
 );
 
+create table tbl_classificacao (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL,
+    descricao TEXT
+);
+
+CREATE TABLE tbl_ator (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    data_nascimento DATE,
+);
+
+
 -- mostra tabela
 show tables;
 -- mostra resltados
@@ -62,3 +75,14 @@ nome,
  delete from tbl_filme where id=5;
  
  drop table tbl_filme;
+
+  insert into tbl_classificacao (nome, descricao) VALUES
+('L', 'Livre para todos os públicos.'),
+('10 anos', 'Não recomendado para menores de 10 anos.'),
+('12 anos', 'Não recomendado para menores de 12 anos.'),
+('14 anos', 'Não recomendado para menores de 14 anos.'),
+('16 anos', 'Não recomendado para menores de 16 anos.'),
+('18 anos', 'Não recomendado para menores de 18 anos.');
+
+insert into tbl_ator (nome, data_nascimento)
+VALUES ('Ellen Page', '1987-02-21');

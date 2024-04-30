@@ -10,37 +10,39 @@
 
 
 // npx prisma init
-
-
+//________________________________________________________________________________________________________________________
+// Definimos as dependências que vamos usar no projeto.
+// Aqui temos o express para criar o servidor, o cors para lidar com as permissões de acesso,
+// e o body-parser para analisar os corpos das solicitações HTTP.
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
-const funcoes = require('./controller/funcoes.js')
 
+// Em seguida, importamos as funções controladoras do nosso projeto.
+const funcoes = require('./controller/funcoes.js').default
+
+// Inicializamos o aplicativo Express.
 const app = express()
 
+// Configuramos o CORS para permitir solicitações de qualquer origem.
 app.use((request, response, next) => {
-
     response.header('Access-Control-Allow-Origin', '*')
     response.header('Access-Control-Allow-Methods', 'GET, SELECT, DELETE, POST')
     app.use(cors)
     next()
 })
 
-// cria um objeto do tipo json para receber dados via body nas requisições post ou put
+// Configuramos o body-parser para analisar corpos JSON.
 const bodyParserJSON = bodyParser.json()
 
-//importação de arquivos e bibliotecas do projeto
-
+// Importamos o controlador de filmes.
 const controllerFilmes = require('./controller/controller_filme.js')
 
-// ------------------------------------------------------------------------------------------------------------------------
+// Aqui começamos a definir os endpoints da nossa API.
 
-
+// Definimos um endpoint para obter uma lista de filmes.
 app.get('/v1/acme/filmes', cors(), function(request, response, next) {
-
-    let controllerFilmes = require('./controller/funcoes.js')
-
+    let controllerFilmes = require('./controller/funcoes.js').default
     let filmes = controllerFilmes.getListarFilmes()
     if (filmes) {
         response.json(filmes)
@@ -50,10 +52,9 @@ app.get('/v1/acme/filmes', cors(), function(request, response, next) {
     }
 })
 
+// Definimos um endpoint assíncrono para obter uma lista de filmes usando async/await.
 app.get('/v2/acme/filmes', cors(), async function(request, response, next) {
-
     let dadosFilmes = await controllerFilmes.getListarFilmes();
-
     if (dadosFilmes) {
         response.json(dadosFilmes)
         response.status(200)
@@ -63,55 +64,32 @@ app.get('/v2/acme/filmes', cors(), async function(request, response, next) {
     }
 })
 
-app.listen(8080, function() {
-    console.log('API Funcionando e aguardando requisições')
-})
-
-
+// Definimos um endpoint para obter detalhes de um filme por ID.
 app.get('/v2/acme/filme/:id', cors(), async function(request, response, next) {
-
-    // recebe as requisições por id
     let idFilme = request.params.id
-
     let dadosFilmesPorID = await controllerFilmes.getBuscarFilme(idFilme);
     response.status(dadosFilmesPorID.status_code)
     response.json(dadosFilmesPorID)
 })
 
-// endpint para inserir novos filmes do BD
-// NÃO ESQUECER DE COLOCAR O BODY PARSER JSON, ELE É QUEM DEFINE O FORMATO DA CHEGADA DOS DADOS
-
-//esse objeto foi criado no inicio do projeto
+// Definimos um endpoint para inserir um novo filme no banco de dados.
 app.post('/v2/acmefilmes/filme/', cors(), bodyParserJSON, async function(request, response, next) {
-
     let contentType = request.headers['content-type'];
-
-    // recebe os dados encaminhados na requisição do body(json)
     let dadosBody = request.body;
-
     let resultDados = await controllerFilmes.setInserirNovoFilme(dadosBody, contentType)
-
     response.status(resultDados.status_code)
     response.json(resultDados)
-
 })
 
+// Definimos um endpoint para excluir um filme do banco de dados por ID.
 app.delete('/v3/acme/filme/delete/:id', cors(), async function(request, response, next) {
-
-    //recebe a requisição do id
     let idFilme = request.params.id
-
     let deleteFilmesbyID = await controllerFilmes.setExcluirFilme(idFilme);
     response.status(deleteFilmesbyID.status_code)
     response.json(deleteFilmesbyID)
 })
 
-app.get('/v2/acme/filme/:id', cors(), async function(request, response, next) {
-
-    // recebe a requisição do id
-    let idFilme = request.params.id
-
-    let dadosFilmesPorID = await controllerFilmes.getBuscarFilme(idFilme);
-    response.status(dadosFilmesPorID.status_code)
-    response.json(dadosFilmesPorID)
+// Finalmente, iniciamos o servidor Express na porta 8080.
+app.listen(8080, function() {
+    console.log('API Funcionando e aguardando requisições')
 })

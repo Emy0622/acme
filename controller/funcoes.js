@@ -5,41 +5,51 @@
  * Versão: 1.0.1.24
  *****************************************************************************************/
 
-var dadosFilmes = require('../model/filmes.js')
+// Importando os dados dos filmes
+var dadosFilmes = require('../modulo/filmes.js').filmes;
 
+
+// Função para obter o último ID do banco de dados
 const obterIdDB = () => {
     let scriptSql;
 
+    // Montando o script SQL para selecionar o último ID da tabela de filmes
     scriptSql = `select id from tbl_filme order by id desc limit 1;`
 
     return scriptSql
 }
 
+// Função para obter uma lista simplificada de filmes
 const getListaFilmes = () => {
+    // Acessando a lista completa de filmes do arquivo de dados
     const filmes = dadosFilmes.filmes.filmes
 
+    // Inicializando variáveis para armazenar os resultados
     let jsonFilmes = {}
     let arrayFilmes = []
 
+    // Iterando sobre cada filme na lista completa
     filmes.forEach((filme) => {
-        let jsonFilmes = {
+        // Criando um objeto JSON simplificado para cada filme contendo apenas o ID e o nome
+        let jsonFilme = {
             id: filme.id,
             nome: filme.nome,
         }
 
-        arrayFilmes.push(jsonFilmes)
+        // Adicionando o filme simplificado ao array de filmes
+        arrayFilmes.push(jsonFilme)
     })
 
+    // Armazenando o array de filmes simplificados no objeto JSON de retorno
     jsonFilmes.filmes = arrayFilmes
 
-    return jsonFilmes
-
+    return jsonFilmes // Retornando a lista de filmes simplificada
 }
 
-getListaFilmes()
-
+// Chamando a função para obter a lista de filmes simplificada e imprimindo no console
 console.log(getListaFilmes())
 
+// Exportando a função para utilização em outros arquivos
 module.exports = {
     getListaFilmes
 }

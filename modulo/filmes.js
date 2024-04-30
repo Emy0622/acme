@@ -1,3 +1,4 @@
+// objeto JavaScript que tem informações sobre filmes.
 var filmes = {
     "filmes": [{
             "id": 1,
@@ -22,6 +23,9 @@ var filmes = {
     ]
 }
 
+
+
+// exporta o objeto 'filmes' para ser usado em outros arquivos.
 module.exports = {
     filmes
 }
