@@ -6,7 +6,7 @@
  *****************************************************************************************/
 
 // Importando os dados dos filmes
-var dadosFilmes = require('../modulo/filmes.js').filmes;
+var dadosFilmes = require('../model/filmes.js');
 
 
 // Função para obter o último ID do banco de dados
@@ -30,26 +30,23 @@ const getListaFilmes = () => {
 
     // Iterando sobre cada filme na lista completa
     filmes.forEach((filme) => {
-        // Criando um objeto JSON simplificado para cada filme contendo apenas o ID e o nome
-        let jsonFilme = {
-            id: filme.id,
-            nome: filme.nome,
-        }
-
-        // Adicionando o filme simplificado ao array de filmes
-        arrayFilmes.push(jsonFilme)
-    })
-
-    // Armazenando o array de filmes simplificados no objeto JSON de retorno
+            // Criando um objeto JSON simplificado para cada filme contendo apenas o ID e o nome
+            let jsonFilmes = {
+                    id: filme.id,
+                    nome: filme.nome,
+                }
+                // Adicionando o filme simplificado ao array de filmes
+            arrayFilmes.push(jsonFilmes)
+        })
+        // Armazenando o array de filmes simplificados no objeto JSON de retorno
     jsonFilmes.filmes = arrayFilmes
 
     return jsonFilmes // Retornando a lista de filmes simplificada
 }
 
-// Chamando a função para obter a lista de filmes simplificada e imprimindo no console
-console.log(getListaFilmes())
+getListaFilmes()
 
-// Exportando a função para utilização em outros arquivos
-module.exports = {
-    getListaFilmes
-}
+// module.exports = {
+//     getListaFilmes,
+//     // pegarIdBD
+// }

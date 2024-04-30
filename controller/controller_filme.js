@@ -5,12 +5,13 @@
  * Versão: 1.0.1.24
  *****************************************************************************************/
 
-// Importando as configurações do projeto e o modelo de filmes
-const message = require('../modulo/config.js')
-const { filmes } = require("../modulo/filmes.js")
+const { filmes } = require("../model/filmes")
 
-// Importando o DAO para manipular dados no banco de dados
-const filmesDAO = require('../model/filme.js')
+// import do arq DAO para manipular dados do banco de dados
+const filmesDAO = require('../model/DAO/filme.js')
+
+// import do arquivo de configuração do projeto
+const message = require('../modulo/config.js')
 
 // Função para colocar um novo filme no banco de dados
 const setInserirNovoFilme = async function(dadosFilme, contentType) {
