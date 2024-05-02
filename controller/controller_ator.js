@@ -1,8 +1,9 @@
-// objetivo: Arquivo responsavel pela interação entre o APP e o Model, que teremos todas as tratativas e regra de negocio para o crud de ATORES
-// data: 2024-04-16
-// autora: Yasmin Targino de Alexandre
-// versao: 1.0.4.24
-//________________________________________________________________________________________________________________________________________________________________________
+/******************************************************************************************
+ * Objetivo: Arquivo responsavel pela interção entre o APP e a model, que teremos todas as tratativas e regra de negocio para o crud de ator
+ * Autora: Yasmin Targino de Alexandre
+ * Data: 30/01/2024
+ * Versão: 1.0.1.24
+ *****************************************************************************************/
 
 const { filmes } = require("../modulo/filmes.js")
 
