@@ -46,7 +46,7 @@ const getListaFilmes = () => {
 
 getListaFilmes()
 
-// module.exports = {
-//     getListaFilmes,
-//     // pegarIdBD
-// }
+module.exports = {
+    getListaFilmes,
+    obterIdDB
+}

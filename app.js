@@ -1,4 +1,3 @@
-//******************************************************************************************************************************************************* */
 // Para fazer as integracoes com o banco de dados, precisamos ultilizar uma dependencia
 // SEQUELIZE    ORM
 // PRISMA       ORM
@@ -12,16 +11,16 @@
 
 // npx prisma init
 
-//******************************************************************************************************************************************************* */
 
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const funcoes = require('./controller/funcoes.js')
 const controllerFilmes = require('./controller/controller_filme.js')
-// const controllerdiretores = require('./controller/controller_diretor.js')
+const controllerAtores = require('./controller/controller_ator.js')
 const controller_genero = require('./controller/controller_genero.js')
 const controllerClassificacao = require('./controller/controller_classificacao.js')
+const config = require('../backend_acme/modulo/config.js')
 
 
 
@@ -55,7 +54,9 @@ app.get('/v1/acme/filmes', cors(), function(request, response, next) {
     }
 })
 
-// Filmes
+// ------------------------------------------------------------------------------------------------
+
+// FILMES
 
 app.get('/v2/acme/filmes', cors(), async function(request, response, next) {
 
@@ -116,7 +117,7 @@ app.put('/v2/acmeFilmes/filme/:id', cors(), bodyParserJSON, async function(reque
     response.json(dadosFilme)
 })
 
-app.delete('/v2/acme/filme/delete/:id', cors(), async function(request, response, next) {
+app.delete('/v3/acme/filme/delete/:id', cors(), async function(request, response, next) {
 
     // RECEBE A RRQUISIÇÃO DO ID
     let idFilme = request.params.id
@@ -128,102 +129,52 @@ app.delete('/v2/acme/filme/delete/:id', cors(), async function(request, response
 
 // ------------------------------------------------------------------------------------------------
 
-// diretores
+// ATORES
 
 
-app.get('/v2/acme/diretores', cors(), async function(request, response, next) {
+// app.get('/v2/acme/atores', cors(), async function(request, response, next) {
 
-    let dadosdiretores = await controllerdiretores.getListardiretores();
-    response.status(dadosdiretores.status_code)
-    response.json(dadosdiretores)
-})
+//     let dadosAtores = await controllerAtores.getListarAtores();
+//     response.status(dadosAtores.status_code)
+//     response.json(dadosAtores)
+// })
 
-app.get('/v2/acme/diretor/:id', cors(), async function(request, response, next) {
+// app.get('/v2/acme/ator/:id', cors(), async function(request, response, next) {
 
-    // RECEBE A RRQUISIÇÃO DO ID
-    let idDiretor = request.params.id
+//     // RECEBE A RRQUISIÇÃO DO ID
+//     let idAtor = request.params.id
 
-    let dadosdiretoresPorID = await controllerdiretores.getBuscardiretor(idDiretor);
-    response.status(dadosdiretoresPorID.status_code)
-    response.json(dadosdiretoresPorID)
-})
+//     let dadosAtoresPorID = await controllerAtores.getBuscarAtor(idAtor);
+//     response.status(dadosAtoresPorID.status_code)
+//     response.json(dadosAtoresPorID)
+// })
 
-app.delete('/v2/acme/diretor/delete/:id', cors(), async function(request, response, next) {
+// app.delete('/v3/acme/ator/delete/:id', cors(), async function(request, response, next) {
 
-    // RECEBE A RRQUISIÇÃO DO ID
-    let idDiretor = request.params.id
+//     // RECEBE A RRQUISIÇÃO DO ID
+//     let idAtor = request.params.id
 
-    let deletardiretoresPorID = await controllerdiretores.setExcluirdiretor(idDiretor);
-    response.status(deletardiretoresPorID.status_code)
-    response.json(deletardiretoresPorID)
-})
+//     let deletarAtoresPorID = await controllerAtores.setExcluirAtor(idAtor);
+//     response.status(deletarAtoresPorID.status_code)
+//     response.json(deletarAtoresPorID)
+// })
 
-app.post('/v2/acmefilmes/diretor/', cors(), bodyParserJSON, async function(request, response, next) {
+// app.post('/v2/acmefilmes/ator/', cors(), bodyParserJSON, async function(request, response, next) {
 
-    // 
-    let contentType = request.headers['content-type']
+//     // 
+//     let contentType = request.headers['content-type']
 
-    console.log(contentType)
+//     console.log(contentType)
 
-    // recebe os dados encaminhados na requisição do body (json)
-    let dadosBody = request.body
+//     // recebe os dados encaminhados na requisição do body (json)
+//     let dadosBody = request.body
 
-    let resultDados = await controllerdiretores.setInserirNovodiretor(dadosBody, contentType)
+//     let resultDados = await controllerAtores.setInserirNovoAtor(dadosBody, contentType)
 
-    response.status(resultDados.status_code)
-    response.json(resultDados)
+//     response.status(resultDados.status_code)
+//     response.json(resultDados)
 
-})
-
-// ------------------------------------------------------------------------------------------------
-
-
-// Diretores
-
-
-app.get('/v2/acme/diretores', cors(), async function(request, response, next) {
-
-    let dadosdiretores = await controllerdiretores.getListardiretores();
-    response.status(dadosdiretores.status_code)
-    response.json(dadosdiretores)
-})
-
-app.get('/v2/acme/diretor/:id', cors(), async function(request, response, next) {
-
-    // RECEBE A RRQUISIÇÃO DO ID
-    let idDiretor = request.params.id
-
-    let dadosdiretoresPorID = await controllerdiretores.getBuscardiretor(idDiretor);
-    response.status(dadosdiretoresPorID.status_code)
-    response.json(dadosdiretoresPorID)
-})
-
-app.delete('/v2/acme/diretor/delete/:id', cors(), async function(request, response, next) {
-
-    // RECEBE A RRQUISIÇÃO DO ID
-    let idDiretor = request.params.id
-
-    let deletardiretoresPorID = await controllerdiretores.setExcluirdiretor(idDiretor);
-    response.status(deletardiretoresPorID.status_code)
-    response.json(deletardiretoresPorID)
-})
-
-app.post('/v2/acmefilmes/diretor/', cors(), bodyParserJSON, async function(request, response, next) {
-
-    // 
-    let contentType = request.headers['content-type']
-
-    console.log(contentType)
-
-    // recebe os dados encaminhados na requisição do body (json)
-    let dadosBody = request.body
-
-    let resultDados = await controllerdiretores.setInserirNovodiretor(dadosBody, contentType)
-
-    response.status(resultDados.status_code)
-    response.json(resultDados)
-
-})
+// })
 
 // ------------------------------------------------------------------------------------------------
 
@@ -246,7 +197,7 @@ app.get('/v2/acme/genero/:id', cors(), async function(request, response, next) {
     response.json(dadosGenerosPorID)
 })
 
-app.delete('/v2/acme/genero/delete/:id', cors(), async function(request, response, next) {
+app.delete('/v3/acme/genero/delete/:id', cors(), async function(request, response, next) {
 
     // RECEBE A RRQUISIÇÃO DO ID
     let idGenero = request.params.id
@@ -333,4 +284,25 @@ app.put('/v2/acmeFilmes/genero/:id', cors(), bodyParserJSON, async function(requ
 
     response.status(dadosGenero.status_code)
     response.json(dadosGenero)
+})
+
+// ------------------------------------------------------------------------------------------------
+
+// NACIONALIDADE
+
+app.get('/v2/acme/nacionalidade', cors(), async function(request, response, next) {
+
+    let dadosNacionalidade = await controllerClassificacao.getListarClassificacoes();
+    response.status(dadosNacionalidade.status_code)
+    response.json(dadosNacionalidade)
+})
+
+app.get('/v2/acme/classificacao/:id', cors(), async function(request, response, next) {
+
+    // RECEBE A RRQUISIÇÃO DO ID
+    let idNacionalidade = request.params.id
+
+    let dadosNacionalidadeporID = await controllerClassificacao.getBuscarClassificacao(idNacionalidade);
+    response.status(dadosNacionalidadeporID.status_code)
+    response.json(dadosNacionalidadeporID)
 })

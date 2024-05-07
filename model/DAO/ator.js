@@ -15,7 +15,7 @@ const selectAllAtores = async function() {
     try {
 
         // sql script para listar todos os filmes existentes
-        let sql = 'SELECT * FROM tbl_ator ORDER BY id_atores DESC'
+        let sql = 'SELECT * FROM tbl_ator ORDER BY id DESC'
 
         // $queryRawUnsafe(sql) --- encaminha apenas a variável
         // $queryRaw('SELECT * FROM tbl_filme') --- encaminha o script
@@ -82,9 +82,6 @@ module.exports = {
     selectByIdAtor
 }
 
-
-
-
 // // Aqui estamos usando o Prisma Client, que é uma ferramenta de banco de dados ORM (Object-Relational Mapping) para interagir com o banco de dados MySQL.
 // const { PrismaClient } = require('@prisma/client')
 
@@ -140,4 +137,3 @@ module.exports = {
 //     deleteAtor,
 //     selectByIdAtor
 // }
-

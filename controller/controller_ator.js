@@ -5,10 +5,10 @@
  * Versão: 1.0.1.24
  *****************************************************************************************/
 
-const { filmes } = require("../modulo/filmes.js")
+const { filmes } = require("../model/filmes")
 
 // import das funcoes que estão em outro arq
-var funcoesParaUso = require('./funcoes.js').default
+var funcoesParaUso = require('./funcoes.js')
 
 // import do arq DAO para manipular dados do banco de dados
 const atoresDAO = require('../model/DAO/ator.js')
@@ -48,9 +48,9 @@ const getListarAtores = async function() {
 
 const setInserirNovoAtor = async function(dadosAtor, contentType) {
 
+    console.log()
+
     try {
-
-
         // recebe o tipo de conteudo Content-type da requisição ( a api deve receber dados application/json)
         if (String(contentType).toLowerCase() == 'application/json') {
 
@@ -86,10 +86,10 @@ const setInserirNovoAtor = async function(dadosAtor, contentType) {
                 if (dadosValidated) {
 
                     // encaminha dados para o dao inserir no banco de dados
-                    let novoFilme = await filmesDAO.insertFilme(dadosFilme)
+                    let novoAtor = await atoresDAO.insertAtor(dadosFilme)
 
                     // validação dos dados sendo nseridos pelo dao no banco de dados
-                    if (novoFilme) {
+                    if (novoAtor) {
 
                         // cria o padrão json ´para o retoro dos dados criados
                         resultDadosFilme.status = message.SUCESS_CREATED_ITEM.status
@@ -183,82 +183,8 @@ const getBuscarAtor = async function(id) {
 
 module.exports = {
     getListarAtores,
-
     setAtualizarAtor,
     setInserirNovoAtor,
     setExcluirAtor,
     getBuscarAtor
 }
-
-
-
-// // Aqui importamos o modelo de filmes.
-// const { filmes } = require("../model/filmes")
-
-// // Importamos algumas funções de outro arquivo.
-// var funcoesParaUso = require('./funcoes.js')
-
-// // Importamos o DAO de atores para manipular dados do banco de dados.
-// const atoresDAO = require('../model/DAO/ator.js')
-
-// // Importamos o arquivo de configuração do projeto.
-// const message = require('../modulo/config.js')
-
-// // Esta função retorna uma lista de todos os atores do banco de dados.
-// const getListarAtores = async function() {
-//     // Tenta obter dados de todos os atores do banco de dados.
-//     try {
-//         let dadosAtores = await atoresDAO.selectAllAtores()
-
-//         let atoresJSON = {}
-
-//         // Verifica se existem dados de atores.
-//         if (dadosAtores) {
-//             // Se houver dados, montamos um JSON para retornar.
-//             if (dadosAtores.length > 0) {
-//                 atoresJSON.atores = dadosAtores
-//                 atoresJSON.quantidade = dadosAtores.length
-//                 atoresJSON.status_code = 200
-//                 return atoresJSON
-//             } else {
-//                 // Se não houver dados, retornamos uma mensagem de erro.
-//                 return message.ERROR_NOT_FOUND
-//             }
-//         } else {
-//             // Se houver um erro interno no servidor de banco de dados, retornamos uma mensagem de erro.
-//             return message.ERROR_INTERNAL_SERVER_DB
-//         }
-//     } catch (error) {
-//         // Se houver um erro interno no servidor, retornamos uma mensagem de erro.
-//         return message.ERROR_INTERNAL_SERVER
-//     }
-// }
-
-// // Esta função insere um novo ator no banco de dados.
-// const setInserirNovoAtor = async function(dadosAtor, contentType) {
-//     // ...
-// }
-
-// // Esta função atualiza um ator no banco de dados.
-// const setAtualizarAtor = async function() {
-//     // ...
-// }
-
-// // Esta função exclui um ator do banco de dados.
-// const setExcluirAtor = async function(id) {
-//     // ...
-// }
-
-// // Esta função busca um ator pelo seu ID no banco de dados.
-// const getBuscarAtor = async function(id) {
-//     // ...
-// }
-
-// // Exportamos todas as funções para uso externo.
-// module.exports = {
-//     getListarAtores,
-//     setAtualizarAtor,
-//     setInserirNovoAtor,
-//     setExcluirAtor,
-//     getBuscarAtor
-// }

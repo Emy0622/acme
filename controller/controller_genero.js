@@ -145,7 +145,6 @@ const setInserirNovoGenero = async function(dadosGenero, contentType) {
 module.exports = {
 
     getListarGeneros,
-
     // setAtualizarGenero,
     setInserirNovoGenero,
     setExcluirGenero,
