@@ -1,12 +1,12 @@
-/******************************************************************************************
- * Objetivo: Arquivo responsavel pela interção entre o APP e a model, que teremos todas as tratativas e regra de negocio para o crud de filmes 
- * Autora: Yasmin Targino de Alexandre
- * Data: 30/01/2024
- * Versão: 1.0.1.24
- *****************************************************************************************/
+/************************************************************************************************************************************************
+ *                                                                                                                                                *
+ * Objetivo: Arquivo responsavel pela interação entre o APP e o Model, que teremos todas as tratativas e regra de negocio para o crud de DIRETORES*
+ * Autora: Yasmin Targino de Alexandre                                                                                                            *
+ * Data: 30/01/2024                                                                                                                               *
+ * Versão: 1.0.1.24                                                                                                                               *
+ ************************************************************************************************************************************************/
 
-
-const { filmes } = require("../model/filmes")
+const { filmes } = require("../model/filmes.js")
 
 // import das funcoes que estão em outro arq
 var funcoesParaUso = require('./funcoes.js')
@@ -18,24 +18,24 @@ const diretoresDAO = require('../model/DAO/diretor.js')
 const message = require('../modulo/config.js')
 
 // funcao para retornar todos os filmes do banco de dados
-const getListardiretores = async function() {
+const getListarDiretor = async function() {
 
     try {
 
         // chama a função do dao para retornar dados no bd
-        let dadosdiretores = await diretoresDAO.selectAlldiretores()
+        let dadosDiretores = await diretoresDAO.selectAllDiretores()
 
-        let diretoresJSON = {}
+        let diretorJSON = {}
 
         // verifica se existem dados
-        if (dadosdiretores) {
+        if (dadosDiretores) {
 
-            if (dadosdiretores.length > 0) {
+            if (dadosDiretores.length > 0) {
                 // montando o json para retornar para o app
-                diretoresJSON.diretores = dadosdiretores
-                diretoresJSON.quantidade = dadosdiretores.length
-                diretoresJSON.status_code = 200
-                return diretoresJSON
+                diretorJSON.diretores = dadosDiretores
+                diretorJSON.quantidade = dadosDiretores.length
+                diretorJSON.status_code = 200
+                return diretorJSON
             } else {
                 return message.ERROR_NOT_FOUND
             }
@@ -47,7 +47,7 @@ const getListardiretores = async function() {
     }
 }
 
-const setInserirNovodiretor = async function(dadosdiretor, contentType) {
+const setInserirNovoDiretor = async function(dadosDiretor, contentType) {
 
     try {
 
@@ -56,25 +56,20 @@ const setInserirNovodiretor = async function(dadosdiretor, contentType) {
         if (String(contentType).toLowerCase() == 'application/json') {
 
             // cia a variavel json
-            let resultDadosFilme = {}
+            let resultDadosDiretor = {}
 
             // validação de dados
-            if (dadosFilme.nome == '' || dadosFilme.nome == undefined || dadosFilme.nome.length > 80 ||
-                dadosFilme.sinopse == '' || dadosFilme.sinopse == undefined || dadosFilme.sinopse.length > 65000 ||
-                dadosFilme.duracao == '' || dadosFilme.duracao == undefined || dadosFilme.duracao.length > 10 ||
-                dadosFilme.data_lancamento == '' || dadosFilme.data_lancamento == undefined || dadosFilme.data_lancamento.length > 10 ||
-                dadosFilme.foto_capa == '' || dadosFilme.foto_capa == undefined || dadosFilme.foto_capa.length > 200 ||
-                dadosFilme.valor_unitario.length > 8) {
-
+            if (dadosDiretor.nome == '' || dadosDiretor.nome == undefined || dadosDiretor.nome.length > 80 ||
+                dadosDiretor.data_nascimento == '' || dadosDiretor.data_nascimento == undefined || dadosDiretor.data_nascimento.length > 10) {
                 return message.ERROR_REQUIRED_FIELDS
             } else {
 
                 // variavel para validar se poderemos chamar o dao para inserirf os dados 
                 let dadosValidated = false
 
-                // validação de digitação para a data de relancamento que não é campo obrigdiretorio
-                if (dadosFilme.data_relancamento != null && dadosFilme.data_relancamento != undefined && dadosFilme.data_relancamento != "") {
-                    if (dadosFilme.data_relancamento.length != 10) {
+                // validação de digitação para a data de relancamento que não é campo obrigatorio
+                if (dadosDiretor.nome_artistico != null && dadosDiretor.nome_artistico != undefined && dadosDiretor.nome_artistico != "") {
+                    if (dadosDiretor.nome_artistico.length > 100) {
                         return message.ERROR_REQUIRED_FIELDS; // 400 - campos preenchidos incorretamente
                     } else {
                         dadosValidated = true // se a data estiver com exatamnete 10 char
@@ -87,18 +82,18 @@ const setInserirNovodiretor = async function(dadosdiretor, contentType) {
                 if (dadosValidated) {
 
                     // encaminha dados para o dao inserir no banco de dados
-                    let novoFilme = await filmesDAO.insertFilme(dadosFilme)
+                    let novoDiretor = await diretoresDAO.insertDiretor(dadosDiretor)
 
                     // validação dos dados sendo nseridos pelo dao no banco de dados
-                    if (novoFilme) {
+                    if (novoDiretor) {
 
                         // cria o padrão json ´para o retoro dos dados criados
-                        resultDadosFilme.status = message.SUCESS_CREATED_ITEM.status
-                        resultDadosFilme.status_code = message.SUCESS_CREATED_ITEM.status_code
-                        resultDadosFilme.message = message.SUCESS_CREATED_ITEM.message
-                        resultDadosFilme.filme = dadosFilme
+                        resultDadosDiretor.status = message.SUCESS_CREATED_ITEM.status
+                        resultDadosDiretor.status_code = message.SUCESS_CREATED_ITEM.status_code
+                        resultDadosDiretor.message = message.SUCESS_CREATED_ITEM.message
+                        resultDadosDiretor.filme = dadosDiretor
 
-                        return resultDadosFilme // 201 
+                        return resultDadosDiretor // 201 
                     } else {
                         return message.ERROR_INTERNAL_SERVER_DB // 500 erro na camada do DAO
                     }
@@ -112,25 +107,23 @@ const setInserirNovodiretor = async function(dadosdiretor, contentType) {
     }
 }
 
-const setAtualizardiretor = async function() {
+const setAtualizarDiretor = async function() {
 
 }
 
-const setExcluirdiretor = async function(id) {
+const setExcluirDiretor = async function(id) {
 
     // recebe o id do filme
     let idDiretor = id
     let diretorJSON = {}
 
     // validação para id vazio, indefinido ou nao numerico
-    if (idDiretor ==
-        '' || idDiretor ==
-        undefined || isNaN(idDiretor)) {
+    if (idDiretor == '' || idDiretor == undefined || isNaN(idDiretor)) {
         return message.ERROR_INVALID_ID
     } else {
 
         // chama a função do dao para retornar dados no bd
-        let deletePorID = await diretoresDAO.deletediretor(idDiretor)
+        let deletePorID = await diretoresDAO.deleteDiretor(idDiretor)
 
         // verifica se dados no servidor de banco foram processados
         if (deletePorID) {
@@ -138,7 +131,7 @@ const setExcluirdiretor = async function(id) {
             // validação para veificar se existem dados a serem processados
             if (deletePorID.length > 0) {
                 // montando o json para retornar para o app
-                diretorJSON.filmes = deletePorID
+                diretorJSON.diretores = deletePorID
                 diretorJSON.status_code = 500
                 return message.ERROR_INTERNAL_SERVER
             } else {
@@ -151,29 +144,27 @@ const setExcluirdiretor = async function(id) {
 
 }
 
-const getBuscardiretor = async function(id) {
+const getBuscarDiretor = async function(id) {
 
     // recebe o id do filme
     let idDiretor = id
     let diretorJSON = {}
 
     // validação para id vazio, indefinido ou nao numerico
-    if (idDiretor ==
-        '' || idDiretor ==
-        undefined || isNaN(idDiretor)) {
+    if (idDiretor == '' || idDiretor == undefined || isNaN(idDiretor)) {
         return message.ERROR_INVALID_ID
     } else {
 
         // chama a função do dao para retornar dados no bd
-        let dadosdiretoresPorID = await diretoresDAO.selectByidDiretor(idDiretor)
+        let dadosDiretoresPorID = await diretoresDAO.selectByIdDiretor(idDiretor)
 
         // verifica se dados no servidor de banco foram processados
-        if (dadosdiretoresPorID) {
+        if (dadosDiretoresPorID) {
 
             // validaão para veificar se existem dados a serem processados
-            if (dadosdiretoresPorID.length > 0) {
+            if (dadosDiretoresPorID.length > 0) {
                 // montando o json para retornar para o app
-                diretorJSON.diretores = dadosdiretoresPorID
+                diretorJSON.diretores = dadosDiretoresPorID
                 diretorJSON.status_code = 200
                 return diretorJSON //200
             } else {
@@ -187,9 +178,9 @@ const getBuscardiretor = async function(id) {
 }
 
 module.exports = {
-    getListardiretores,
-    setAtualizardiretor,
-    setInserirNovodiretor,
-    setExcluirdiretor,
-    getBuscardiretor
+    getListarDiretor,
+    setAtualizarDiretor,
+    setInserirNovoDiretor,
+    setExcluirDiretor,
+    getBuscarDiretor
 }

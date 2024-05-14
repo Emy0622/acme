@@ -14,7 +14,7 @@ const selectAllGeneros = async function(id) {
     try {
 
         // sql script para listar todos os filmes existentes
-        let sql = 'SELECT * FROM tbl_genero ORDER BY id_generos DESC'
+        let sql = 'SELECT * FROM tbl_genero ORDER BY id DESC'
 
 
         // $queryRawUnsafe(sql) --- encaminha apenas a variável
@@ -39,7 +39,7 @@ const selectByIdGenero = async function(id) {
     try {
 
         // sql script para listar os filmes por id
-        let sql = `SELECT * FROM tbl_genero WHERE id_generos =${id}`
+        let sql = `SELECT * FROM tbl_genero WHERE id =${id}`
 
         // $queryRawUnsafe(sql) --- encaminha apenas a variável
         // $queryRaw('SELECT * FROM tbl_filme') --- encaminha o script
@@ -58,7 +58,7 @@ const deleteGenero = async function(id) {
     try {
 
         // sql script para deletar os filmes por id
-        let sql = `DELETE FROM tbl_genero WHERE id_generos=${id};`
+        let sql = `DELETE FROM tbl_genero WHERE id=${id};`
 
         // $queryRawUnsafe(sql) --- encaminha apenas a variável
         // $queryRaw('SELECT * FROM tbl_filme') --- encaminha o script
@@ -78,7 +78,7 @@ const insertGenero = async function(dadosGenero) {
 
         let sql = `INSERT INTO tbl_genero (nome) values ('${dadosGenero.nome}')`
 
-        console.log(funcoesParaUso.pegarIdBD())
+        //console.log(funcoesParaUso.pegarIdBD())
 
         // executa o cript sql no banco de dados OBS: DEVEMOS USAR O COMANDO {[( EXECUTE )]} E NÃO O QUERY
         let result = await prisma.$executeRawUnsafe(sql)

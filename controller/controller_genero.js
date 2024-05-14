@@ -120,6 +120,8 @@ const setInserirNovoGenero = async function(dadosGenero, contentType) {
                 // encaminha dados para o dao inserir no banco de dados
                 let novoGenero = await generosDAO.insertGenero(dadosGenero)
 
+                console.log(novoGenero)
+
                 // validação dos dados sendo nseridos pelo dao no banco de dados
                 if (novoGenero) {
 
@@ -142,10 +144,11 @@ const setInserirNovoGenero = async function(dadosGenero, contentType) {
 }
 
 
-module.exports = {
 
+
+
+module.exports = {
     getListarGeneros,
-    // setAtualizarGenero,
     setInserirNovoGenero,
     setExcluirGenero,
     getBuscarGenero,

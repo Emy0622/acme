@@ -1,7 +1,10 @@
-// Objetivo: Criar a interação do banco de dados MySql para fazer o CRUD de ATORES
-// Data: 2024-04-16
-// Autor: Eduardo Goncalves
-// Versao: 1.0.4.24
+/************************************************************************************************************************************************
+ *                                                                                                                                              *
+ * Objetivo: Criar a interação do banco de dados MySql para fazer o CRUD de ATORES                                                              *
+ * Autora: Yasmin Targino de Alexandre                                                                                                          *
+ * Data: 30/01/2024                                                                                                                             *
+ * Versão: 1.0.1.24                                                                                                                             *
+ ************************************************************************************************************************************************/
 
 // import da biblioteca do Prisma Client
 const { PrismaClient } = require('@prisma/client')
@@ -29,9 +32,46 @@ const selectAllAtores = async function() {
     }
 }
 
-const insertAtor = async function(dadosFilme) {
+const insertAtor = async function(dadosAtor) {
+    // script sql para inserir no banco de dados
+    try {
+        let sql;
 
-}
+        if (dadosAtor.nome_artistico == null) {
+            sql = `INSERT INTO tbl_ator (
+                    nome,
+                    nome_artistico,
+                    data_nascimento
+                    ) values (
+                        '${dadosAtor.nome}', 
+                         null,                
+                         '${dadosAtor.data_nascimento}'
+                         )`;
+        } else {
+            sql = `INSERT INTO tbl_ator (
+                    nome,
+                    nome_artistico,
+                    data_nascimento
+            ) values (
+                '${dadosAtor.nome}',
+                        '${dadosAtor.nome_artistico}',
+                        '${dadosAtor.data_nascimento}'
+        )`;
+        }
+
+        // console.log(funcoesParaUso.pegarIdBD())
+
+        // executa o cript sql no banco de dados OBS: DEVEMOS USAR O COMANDO {[( EXECUTE )]} E NÃO O QUERY
+        let result = await prisma.$executeRawUnsafe(sql);
+
+        // validação para verificar se o insert funcionou no banco de dados
+        if (result) return true;
+        else return false;
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+};
 
 const updateAtor = async function(id) {
 
@@ -42,7 +82,7 @@ const deleteAtor = async function(id) {
     try {
 
         // sql script para deletar os filmes por id
-        let sql = `DELETE FROM tbl_ator WHERE id_atores=${id};`
+        let sql = `DELETE FROM tbl_ator WHERE id=${id};`
 
         // $queryRawUnsafe(sql) --- encaminha apenas a variável
         // $queryRaw('SELECT * FROM tbl_filme') --- encaminha o script
@@ -60,7 +100,7 @@ const selectByIdAtor = async function(id) {
     try {
 
         // sql script para listar os filmes por id
-        let sql = `SELECT * FROM tbl_ator WHERE id_atores =${id}`
+        let sql = `SELECT * FROM tbl_ator WHERE id =${id}`
 
         // $queryRawUnsafe(sql) --- encaminha apenas a variável
         // $queryRaw('SELECT * FROM tbl_filme') --- encaminha o script
@@ -75,65 +115,8 @@ const selectByIdAtor = async function(id) {
 
 module.exports = {
     selectAllAtores,
-
     insertAtor,
     updateAtor,
     deleteAtor,
     selectByIdAtor
 }
-
-// // Aqui estamos usando o Prisma Client, que é uma ferramenta de banco de dados ORM (Object-Relational Mapping) para interagir com o banco de dados MySQL.
-// const { PrismaClient } = require('@prisma/client')
-
-// // Estamos criando uma instância do Prisma Client para usar em nossas operações de banco de dados.
-// const prisma = new PrismaClient()
-
-// // Essa função seleciona todos os atores da tabela no banco de dados.
-// const selectAllAtores = async function() {
-//     try {
-//         // Montamos um SQL script para selecionar todos os atores ordenados por ID de forma decrescente.
-//         let sql = 'SELECT * FROM tbl_ator ORDER BY id_atores DESC'
-//         // Executamos a consulta usando o método $queryRawUnsafe do Prisma.
-//         let rsAtores = await prisma.$queryRawUnsafe(sql)
-//         return rsAtores
-//     } catch (error) {
-//         return false
-//     }
-// }
-
-// // Aqui teríamos uma função para inserir um novo ator no banco de dados, mas parece que ainda não foi implementada.
-
-// // Também temos uma função para atualizar um ator no banco de dados, mas está vazia no momento.
-
-// // Essa função exclui um ator do banco de dados com base em seu ID.
-// const deleteAtor = async function(id) {
-//     try {
-//         // Montamos um SQL script para deletar um ator com base em seu ID.
-//         let sql = `DELETE FROM tbl_ator WHERE id_atores=${id};`
-//         // Executamos a consulta usando o método $queryRawUnsafe do Prisma.
-//         let rsAtores = await prisma.$queryRawUnsafe(sql)
-//         return rsAtores
-//     } catch (error) {
-//         return false
-//     }
-// }
-
-// // Essa função seleciona um ator específico com base em seu ID.
-// const selectByIdAtor = async function(id) {
-//     try {
-//         // Montamos um SQL script para selecionar um ator com base em seu ID.
-//         let sql = `SELECT * FROM tbl_ator WHERE id_atores =${id}`
-//         // Executamos a consulta usando o método $queryRawUnsafe do Prisma.
-//         let rsAtor = await prisma.$queryRawUnsafe(sql)
-//         return rsAtor
-//     } catch (error) {
-//         return false
-//     }
-// }
-
-// // Exportamos as funções para que elas possam ser usadas em outros arquivos.
-// module.exports = {
-//     selectAllAtores,
-//     deleteAtor,
-//     selectByIdAtor
-// }

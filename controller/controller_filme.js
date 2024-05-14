@@ -1,9 +1,9 @@
-/******************************************************************************************
- * Objetivo: Arquivo responsavel pela interção entre o APP e a model, que teremos todas as tratativas e regra de negocio para o crud de filmes 
- * Autora: Yasmin Targino de Alexandre
- * Data: 30/01/2024
- * Versão: 1.0.1.24
- *****************************************************************************************/
+/***********************************************************************************************************************************************
+ * Objetivo: Arquivo responsavel pela interção entre o APP e a model, que teremos todas as tratativas e regra de negocio para o crud de filmes *
+ * Autora: Yasmin Targino de Alexandre                                                                                                         *
+ * Data: 30/01/2024                                                                                                                            *
+ * Versão: 1.0.1.24                                                                                                                            *
+ ***********************************************************************************************************************************************/
 
 const { filmes } = require("../model/filmes")
 
@@ -162,7 +162,6 @@ const setAtualizarFilme = async function(idFilme, dadoAtualizado, contentType) {
 
 // funcao para excluir um filme do banco de dados
 const setExcluirFilme = async function(id) {
-
 
     // recebe o id do filme
     let idFilme = id

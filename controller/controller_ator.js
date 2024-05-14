@@ -1,9 +1,10 @@
-/******************************************************************************************
- * Objetivo: Arquivo responsavel pela interção entre o APP e a model, que teremos todas as tratativas e regra de negocio para o crud de ator
- * Autora: Yasmin Targino de Alexandre
- * Data: 30/01/2024
- * Versão: 1.0.1.24
- *****************************************************************************************/
+/************************************************************************************************************************************************
+ *                                                                                                                                              *
+ * Objetivo: Arquivo responsavel pela interção entre o APP e a model, que teremos todas as tratativas e regra de negocio para o crud de ator    *
+ * Autora: Yasmin Targino de Alexandre                                                                                                          *
+ * Data: 30/01/2024                                                                                                                             *
+ * Versão: 1.0.1.24                                                                                                                             *
+ ************************************************************************************************************************************************/
 
 const { filmes } = require("../model/filmes")
 
@@ -55,15 +56,11 @@ const setInserirNovoAtor = async function(dadosAtor, contentType) {
         if (String(contentType).toLowerCase() == 'application/json') {
 
             // cia a variavel json
-            let resultDadosFilme = {}
+            let resultDadosAtor = {}
 
             // validação de dados
-            if (dadosFilme.nome == '' || dadosFilme.nome == undefined || dadosFilme.nome.length > 80 ||
-                dadosFilme.sinopse == '' || dadosFilme.sinopse == undefined || dadosFilme.sinopse.length > 65000 ||
-                dadosFilme.duracao == '' || dadosFilme.duracao == undefined || dadosFilme.duracao.length > 10 ||
-                dadosFilme.data_lancamento == '' || dadosFilme.data_lancamento == undefined || dadosFilme.data_lancamento.length > 10 ||
-                dadosFilme.foto_capa == '' || dadosFilme.foto_capa == undefined || dadosFilme.foto_capa.length > 200 ||
-                dadosFilme.valor_unitario.length > 8) {
+            if (dadosAtor.nome == '' || dadosAtor.nome == undefined || dadosAtor.nome.length > 80 ||
+                dadosAtor.data_nascimento == '' || dadosAtor.data_nascimento == undefined || dadosAtor.data_nascimento.length > 10) {
 
                 return message.ERROR_REQUIRED_FIELDS
             } else {
@@ -72,8 +69,8 @@ const setInserirNovoAtor = async function(dadosAtor, contentType) {
                 let dadosValidated = false
 
                 // validação de digitação para a data de relancamento que não é campo obrigatorio
-                if (dadosFilme.data_relancamento != null && dadosFilme.data_relancamento != undefined && dadosFilme.data_relancamento != "") {
-                    if (dadosFilme.data_relancamento.length != 10) {
+                if (dadosAtor.nome_artistico != null && dadosAtor.nome_artistico != undefined && dadosAtor.data_relancamento != "") {
+                    if (dadosAtor.nome_artistico.length > 100) {
                         return message.ERROR_REQUIRED_FIELDS; // 400 - campos preenchidos incorretamente
                     } else {
                         dadosValidated = true // se a data estiver com exatamnete 10 char
@@ -86,18 +83,18 @@ const setInserirNovoAtor = async function(dadosAtor, contentType) {
                 if (dadosValidated) {
 
                     // encaminha dados para o dao inserir no banco de dados
-                    let novoAtor = await atoresDAO.insertAtor(dadosFilme)
+                    let novoAtor = await atoresDAO.insertAtor(dadosAtor)
 
                     // validação dos dados sendo nseridos pelo dao no banco de dados
                     if (novoAtor) {
 
                         // cria o padrão json ´para o retoro dos dados criados
-                        resultDadosFilme.status = message.SUCESS_CREATED_ITEM.status
-                        resultDadosFilme.status_code = message.SUCESS_CREATED_ITEM.status_code
-                        resultDadosFilme.message = message.SUCESS_CREATED_ITEM.message
-                        resultDadosFilme.filme = dadosFilme
+                        resultDadosAtor.status = message.SUCESS_CREATED_ITEM.status
+                        resultDadosAtor.status_code = message.SUCESS_CREATED_ITEM.status_code
+                        resultDadosAtor.message = message.SUCESS_CREATED_ITEM.message
+                        resultDadosAtor.filme = dadosAtor
 
-                        return resultDadosFilme // 201 
+                        return resultDadosAtor // 201 
                     } else {
                         return message.ERROR_INTERNAL_SERVER_DB // 500 erro na camada do DAO
                     }
